@@ -29,33 +29,33 @@ AppAsset::register($this);
 <div class="wrap">
     <?php
     NavBar::begin([
-        'brandLabel' => 'My Company',
+        'brandLabel' => Yii::t('app','My Company'),
         'brandUrl' => Yii::$app->homeUrl,
         'options' => [
             'class' => 'navbar-inverse navbar-fixed-top ',
         ],
     ]);
     $menuItems = [
-        ['label' => 'Home', 'url' => ['/site/index']],
-        ['label' => 'About', 'url' => ['/site/about']],
-        ['label' => 'Contact', 'url' => ['/site/contact']],
+        ['label' => Yii::t('app', 'Home'), 'url' => ['/site/index']],
+        ['label' => Yii::t('app','About'), 'url' => ['/site/about']],
+        ['label' => Yii::t('app','Contact'), 'url' => ['/site/contact']],
     ];
     $menuItems[] =   '<li class="dropdown">
-        <a class="dropdown-toggle" data-toggle="dropdown" href="#">语言
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#">'.Yii::t('app','Language').'
             <span class="caret"></span></a>
         <ul class="dropdown-menu" style="min-width: 20px;">
-            <li><a href='.Url::toRoute(['/site/language','language'=>'en-US']).'>English</a></li>
-            <li><a href='.Url::toRoute(['/site/language','language'=>'zh-CN']).'>中文</a></li>
+            <li><a href='.Url::toRoute(['/site/language','language'=>'en-US']).'>'.Yii::t('app','English').'</a></li>
+            <li><a href='.Url::toRoute(['/site/language','language'=>'zh-CN']).'>'.Yii::t('app','Chinese').'</a></li>
         </ul>
     </li>';
     if (Yii::$app->user->isGuest) {
-        $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup']];
-        $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
+        $menuItems[] = ['label' =>Yii::t('app','Signup'), 'url' => ['/site/signup']];
+        $menuItems[] = ['label' =>Yii::t('app','Login'), 'url' => ['/site/login']];
     } else {
         $menuItems[] = '<li>'
             . Html::beginForm(['/site/logout'], 'post')
             . Html::submitButton(
-                'Logout (' . Yii::$app->user->identity->username . ')',
+                Yii::t('app','Logout').' (' . Yii::$app->user->identity->username . ')',
                 ['class' => 'btn btn-link logout']
             )
             . Html::endForm()

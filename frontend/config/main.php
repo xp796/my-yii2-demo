@@ -13,13 +13,6 @@ return [
     'language'=>'zh-CN',
     'timeZone' => 'Asia/Chongqing',
     'controllerNamespace' => 'frontend\controllers',
-    'on beforeRequest'=>function($event){
-        $language = Yii::$app->request->cookies->get('locate');
-        $language = isset($language)?$language:'en-US';
-        Yii::$app->sourceLanguage = 'en';
-        Yii::$app->language = $language;
-        return;
-    },
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-frontend',
@@ -39,23 +32,6 @@ return [
                 [
                     'class' => 'yii\log\FileTarget',
                     'levels' => ['error', 'warning'],
-                ],
-            ],
-        ],
-        'i18n'=>[
-            'translations' => [
-                'app'=>[
-                    'class' => 'yii\i18n\PhpMessageSource',
-                    'basePath'=>'@common/messages',
-                ],
-                '*'=> [
-                    'class' => 'yii\i18n\PhpMessageSource',
-                    'basePath'=>'@common/messages',
-                    'fileMap'=>[
-                        'common'=>'common.php',
-                        'backend'=>'backend.php',
-                        'frontend'=>'frontend.php',
-                    ],
                 ],
             ],
         ],

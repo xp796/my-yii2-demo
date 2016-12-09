@@ -1,6 +1,7 @@
 <?php
 namespace frontend\controllers;
 
+use app\helpers\Util;
 use Yii;
 use yii\base\InvalidParamException;
 use yii\web\BadRequestHttpException;
@@ -217,12 +218,15 @@ class SiteController extends Controller
      */
     public function actionLanguage()
     {
+        $url = Yii::$app->request->getUrl();
+        dump($url);
         $language = Yii::$app->request->get('language');
         if($language){
             $l_cookie = new Cookie(['name'=>'locate','value'=>$language,'expire' => 3600*24*30]);
             $l_cookie->expire = time()+3600*24*30;
             Yii::$app->response->cookies->add($l_cookie);
         }
+//        var_dump(Yii::$app->language);exit;
         $this->goBack(Yii::$app->request->headers['Referer']);
     }
 }
