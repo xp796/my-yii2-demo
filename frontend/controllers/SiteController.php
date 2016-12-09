@@ -218,8 +218,6 @@ class SiteController extends Controller
      */
     public function actionLanguage()
     {
-        $url = Yii::$app->request->getUrl();
-        dump($url);
         $language = Yii::$app->request->get('language');
         if($language){
             $l_cookie = new Cookie(['name'=>'locate','value'=>$language,'expire' => 3600*24*30]);
