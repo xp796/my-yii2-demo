@@ -21,7 +21,7 @@ use Yii;
 class BaseInflector
 {
     /**
-     * @var array the rules for converting a word into its plural form.
+     * @var array the rules for converting a word into its plural（复数的） form.
      * The keys are the regular expressions and the values are the corresponding replacements.
      */
     public static $plurals = [

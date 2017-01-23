@@ -171,7 +171,7 @@ class BaseArrayHelper
      * $value = \yii\helpers\ArrayHelper::getValue($versions, ['1.0', 'date']);
      * ```
      *
-     * @param array|object $array array or object to extract value from
+     * @param array|object $array array or object to extract（提取、取出） value from
      * @param string|\Closure|array $key key name of the array element, an array of keys or property name of the object,
      * or an anonymous function returning the value. The anonymous function signature should be:
      * `function($array, $defaultValue)`.

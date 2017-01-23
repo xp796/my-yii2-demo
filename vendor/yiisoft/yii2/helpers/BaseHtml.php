@@ -208,7 +208,7 @@ class BaseHtml
 
     /**
      * Generates a link tag that refers to an external CSS file.
-     * @param array|string $url the URL of the external CSS file. This parameter will be processed by [[Url::to()]].
+     * @param array|string $url the URL of the external CSS file. This parameter will be processed(处理、加工)by [[Url::to()]].
      * @param array $options the tag options in terms of name-value pairs. The following option is specially handled:
      *
      * - condition: specifies the conditional comments for IE, e.g., `lt IE 9`. When this is specified,
@@ -301,12 +301,12 @@ class BaseHtml
     /**
      * Generates a form start tag.
      * @param array|string $action the form action URL. This parameter will be processed by [[Url::to()]].
-     * @param string $method the form submission method, such as "post", "get", "put", "delete" (case-insensitive).
+     * @param string $method the form submission（提交） method, such as "post", "get", "put", "delete" (case-insensitive).
      * Since most browsers only support "post" and "get", if other methods are given, they will
-     * be simulated using "post", and a hidden input will be added which contains the actual method type.
+     * be simulated（模拟、模仿、伪造） using "post", and a hidden input will be added which contains the actual method type.
      * See [[\yii\web\Request::methodParam]] for more details.
      * @param array $options the tag options in terms of name-value pairs. These will be rendered as
-     * the attributes of the resulting tag. The values will be HTML-encoded using [[encode()]].
+     * the attributes of the resulting（作为结果） tag. The values will be HTML-encoded using [[encode()]].
      * If a value is null, the corresponding attribute will not be rendered.
      * See [[renderTagAttributes()]] for details on how attributes are being rendered.
      *

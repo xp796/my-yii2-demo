@@ -7,6 +7,7 @@
 
 namespace yii\helpers;
 
+use app\helpers\Util;
 use Yii;
 use yii\base\InvalidParamException;
 
@@ -98,6 +99,7 @@ class BaseUrl
         $route[0] = static::normalizeRoute($route[0]);
 
         if ($scheme) {
+            //绝对路径
             return static::getUrlManager()->createAbsoluteUrl($route, is_string($scheme) ? $scheme : null);
         } else {
             return static::getUrlManager()->createUrl($route);
@@ -205,12 +207,14 @@ class BaseUrl
      */
     public static function to($url = '', $scheme = false)
     {
+        //如果$url 为数组，直接调用static::toRoute()方法;
         if (is_array($url)) {
             return static::toRoute($url, $scheme);
         }
-
         $url = Yii::getAlias($url);
+
         if ($url === '') {
+            //当前请求的Url地址
             $url = Yii::$app->getRequest()->getUrl();
         }
 

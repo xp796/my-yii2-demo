@@ -20,7 +20,7 @@ class BaseHtmlPurifier
     /**
      * Passes markup through HTMLPurifier making it safe to output to end user
      *
-     * @param string $content The HTML content to purify
+     * @param string $content The HTML content to purify（净化）
      * @param array|\Closure|null $config The config to use for HtmlPurifier.
      * If not specified or `null` the default config will be used.
      * You can use an array or an anonymous function to provide configuration options:

@@ -48,9 +48,9 @@ class CookieCollection extends Object implements \IteratorAggregate, \ArrayAcces
     }
 
     /**
-     * Returns an iterator for traversing the cookies in the collection.
+     * Returns an iterator（迭代器） for traversing the cookies in the collection.
      * This method is required by the SPL interface [[\IteratorAggregate]].
-     * It will be implicitly called when you use `foreach` to traverse the collection.
+     * It will be implicitly（含蓄的） called when you use `foreach` to traverse（穿过） the collection.
      * @return ArrayIterator an iterator for traversing the cookies in the collection.
      */
     public function getIterator()

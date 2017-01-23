@@ -133,7 +133,7 @@ class Response extends \yii\base\Response
      */
     public $content;
     /**
-     * @var resource|array the stream to be sent. This can be a stream handle or an array of stream handle,
+     * @var resource|array the stream（流） to be sent. This can be a stream handle or an array of stream handle,
      * the begin position and the end position. Note that when this property is set, the [[data]] and [[content]]
      * properties will be ignored by [[send()]].
      */
@@ -812,12 +812,14 @@ class Response extends \yii\base\Response
     {
         if (is_array($url) && isset($url[0])) {
             // ensure the route is absolute
+            //保证是一个绝对路径
             $url[0] = '/' . ltrim($url[0], '/');
         }
         $url = Url::to($url);
         if (strpos($url, '/') === 0 && strpos($url, '//') !== 0) {
             $url = Yii::$app->getRequest()->getHostInfo() . $url;
         }
+        dump(strpos($url, '/')===0);
 
         if ($checkAjax) {
             if (Yii::$app->getRequest()->getIsAjax()) {
@@ -853,10 +855,11 @@ class Response extends \yii\base\Response
      * return Yii::$app->getResponse()->refresh();
      * ```
      *
-     * @param string $anchor the anchor that should be appended to the redirection URL.
+     * @param string $anchor the anchor（锚点） that should be appended to the redirection URL.
      * Defaults to empty. Make sure the anchor starts with '#' if you want to specify it.
      * @return Response the response object itself
      */
+    //刷新当前页面
     public function refresh($anchor = '')
     {
         return $this->redirect(Yii::$app->getRequest()->getUrl() . $anchor);

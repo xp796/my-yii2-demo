@@ -81,9 +81,11 @@ class MessageSource extends Component
      * @param string $language the target language
      * @return string|boolean the translated message or false if translation wasn't found or isn't required
      */
+    // 翻译一段信息为指定的语言文件下的内容
     public function translate($category, $message, $language)
     {
         if ($this->forceTranslation || $language !== $this->sourceLanguage) {
+
             return $this->translateMessage($category, $message, $language);
         } else {
             return false;
@@ -104,6 +106,8 @@ class MessageSource extends Component
     {
         $key = $language . '/' . $category;
         if (!isset($this->_messages[$key])) {
+            // $language = 'zh-CN'  $category = 'app'
+            // $this->loadMessages($category, $language) 为合并后的指定类别语言的翻译数组 key => value
             $this->_messages[$key] = $this->loadMessages($category, $language);
         }
         if (isset($this->_messages[$key][$message]) && $this->_messages[$key][$message] !== '') {

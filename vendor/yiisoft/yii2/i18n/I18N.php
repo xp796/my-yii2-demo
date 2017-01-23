@@ -42,7 +42,7 @@ class I18N extends Component
      * The category "yii" and "app" are always defined. The former refers to the messages used in the Yii core
      * framework code, while the latter refers to the default message category for custom application code.
      * By default, both of these categories use [[PhpMessageSource]] and the corresponding message files are
-     * stored under "@yii/messages" and "@app/messages", respectively.
+     * stored under "@yii/messages" and "@app/messages", respectively(分别的、各自的、独自的).
      *
      * You may override the configuration of both categories.
      */
@@ -85,8 +85,11 @@ class I18N extends Component
      */
     public function translate($category, $message, $params, $language)
     {
+        // 返回MessageSource the message source for the given category.
         $messageSource = $this->getMessageSource($category);
+        //返回翻译的内容
         $translation = $messageSource->translate($category, $message, $language);
+        //格式话翻译的内容
         if ($translation === false) {
             return $this->format($message, $params, $messageSource->sourceLanguage);
         } else {
@@ -166,6 +169,7 @@ class I18N extends Component
      * @return MessageSource the message source for the given category.
      * @throws InvalidConfigException if there is no message source available for the specified category.
      */
+    //根据配置文件内容和 给的参数$category 返回继承MessageSource 相应子类的实例对象， 本例根据配置文件返回PhpMessageSource对象
     public function getMessageSource($category)
     {
         if (isset($this->translations[$category])) {

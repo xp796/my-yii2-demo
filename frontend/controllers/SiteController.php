@@ -224,6 +224,12 @@ class SiteController extends Controller
             $l_cookie->expire = time()+3600*24*30;
             Yii::$app->response->cookies->add($l_cookie);
         }
+        $arr = ['a',2,3,4];
+        $str = array_shift($arr);
+        dump();
+
+        return  $this->redirect('about');
+//        return Yii::$app->response->refresh();
 //        var_dump(Yii::$app->language);exit;
         $this->goBack(Yii::$app->request->headers['Referer']);
     }
