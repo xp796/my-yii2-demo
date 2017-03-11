@@ -23,11 +23,11 @@ use yii\rbac\CheckAccessInterface;
  * You may call various methods to change the user authentication status:
  *
  * - [[login()]]: sets the specified identity and remembers the authentication status in session and cookie;
- * - [[logout()]]: marks the user as a guest and clears the relevant information from session and cookie;
+ * - [[logout()]]: marks the user as a guest and clears the relevant（相关的、有关的） information from session and cookie;
  * - [[setIdentity()]]: changes the user identity without touching session or cookie
  *   (this is best used in stateless RESTful API implementation).
  *
- * Note that User only maintains the user authentication status. It does NOT handle how to authenticate
+ * Note that User only maintains（维持、保持） the user authentication status. It does NOT handle how to authenticate
  * a user. The logic of how to authenticate a user should be done in the class implementing [[IdentityInterface]].
  * You are also required to set [[identityClass]] with the name of this class.
  *
@@ -67,17 +67,20 @@ class User extends Component
     /**
      * @var string the class name of the [[identity]] object.
      */
+    //User must implement the IdentityInterface 必须继承 IdentityInterface 的用户自己定义的User model
     public $identityClass;
     /**
      * @var boolean whether to enable cookie-based login. Defaults to `false`.
      * Note that this property will be ignored if [[enableSession]] is `false`.
      */
+    //是否启用基于cooked的登录，当$enableSession为false是会被忽略
     public $enableAutoLogin = false;
     /**
-     * @var boolean whether to use session to persist authentication status across multiple requests.
+     * @var boolean whether to use session to persist（持续） authentication（认证、身份验证） status across multiple requests.
      * You set this property to be `false` if your application is stateless, which is often the case
      * for RESTful APIs.
      */
+    //是否启用基于session的持续验证登录状态
     public $enableSession = true;
     /**
      * @var string|array the URL for login when [[loginRequired()]] is called.
@@ -91,57 +94,67 @@ class User extends Component
      *
      * If this property is `null`, a 403 HTTP exception will be raised when [[loginRequired()]] is called.
      */
+    //默认的登录路径，如果数组有多个参数的话，后面的参数作为键值对为get方法提供参数，如果该属性为null时当调用loginRequired时会抛出403的异常
     public $loginUrl = ['site/login'];
     /**
      * @var array the configuration of the identity cookie. This property is used only when [[enableAutoLogin]] is `true`.
      * @see Cookie
      */
+    //登录验证的cookie参数的名称，只有当enableAutoLogin 为true时才会用到，httpOnly参数的意思是cookie不能通过客户端脚本访问
     public $identityCookie = ['name' => '_identity', 'httpOnly' => true];
     /**
      * @var integer the number of seconds in which the user will be logged out automatically if he
-     * remains inactive. If this property is not set, the user will be logged out after
+     * remains inactive（不活动）. If this property is not set, the user will be logged out after
      * the current session expires (c.f. [[Session::timeout]]).
      * Note that this will not work if [[enableAutoLogin]] is `true`.
      */
+    //如果用户多久不活动的话，自动多少秒会退出登录，如果这个属性没有设置，用户会在当前的session有效期结束后自动退出登录状态，这个属性在enableAutoLogin为true时不会有用
     public $authTimeout;
     /**
      * @var CheckAccessInterface The access checker to use for checking access.
      * If not set the application auth manager will be used.
      * @since 2.0.9
      */
+    //检查使用权，当未设置该参数时，应用的 auth manager组件会被使用
     public $accessChecker;
     /**
      * @var integer the number of seconds in which the user will be logged out automatically
      * regardless of activity.
      * Note that this will not work if [[enableAutoLogin]] is `true`.
      */
+    //无视用户的活跃状态自动退出登录的时间，当enableAutoLogin为true时不会应用
     public $absoluteAuthTimeout;
     /**
      * @var boolean whether to automatically renew the identity cookie each time a page is requested.
      * This property is effective only when [[enableAutoLogin]] is `true`.
      * When this is `false`, the identity cookie will expire after the specified duration since the user
-     * is initially logged in. When this is `true`, the identity cookie will expire after the specified duration
+     * is initially logged in. When this is `true`, the identity cookie will expire（期满。终止） after the specified duration
      * since the user visits the site the last time.
      * @see enableAutoLogin
      */
+    // 是否重新生成新的cookie ,这个属性只有enableAutoLogin为true时才会有效
     public $autoRenewCookie = true;
     /**
      * @var string the session variable name used to store the value of [[id]].
      */
+    //用来存储用户登录 id变量值的变量名称
     public $idParam = '__id';
     /**
      * @var string the session variable name used to store the value of expiration timestamp of the authenticated state.
      * This is used when [[authTimeout]] is set.
      */
+    //当authTimeout被设置时，存储维持登录状态的有效时间的session变量名称
     public $authTimeoutParam = '__expire';
     /**
      * @var string the session variable name used to store the value of absolute expiration timestamp of the authenticated state.
      * This is used when [[absoluteAuthTimeout]] is set.
      */
+    //当absoluteAuthTimeout被设置时，存储绝对的维持登录的有效时间的session变量名称
     public $absoluteAuthTimeoutParam = '__absoluteExpire';
     /**
      * @var string the session variable name used to store the value of [[returnUrl]].
      */
+    // 存储returnUrl值的session变量名称
     public $returnUrlParam = '__returnUrl';
     /**
      * @var array MIME types for which this component should redirect to the [[loginUrl]].
@@ -155,6 +168,7 @@ class User extends Component
     /**
      * Initializes the application component.
      */
+    //初始化应用组件，判断必要参数是否设置，未设置抛出异常
     public function init()
     {
         parent::init();
@@ -172,7 +186,7 @@ class User extends Component
     /**
      * Returns the identity object associated with the currently logged-in user.
      * When [[enableSession]] is true, this method may attempt to read the user's authentication data
-     * stored in session and reconstruct the corresponding identity object, if it has not done so before.
+     * stored in session and reconstruct（重建、修复） the corresponding identity object, if it has not done so before.
      * @param boolean $autoRenew whether to automatically renew authentication status if it has not been done so before.
      * This is only useful when [[enableSession]] is true.
      * @return IdentityInterface|null the identity object associated with the currently logged-in user.
@@ -180,6 +194,7 @@ class User extends Component
      * @see login()
      * @see logout()
      */
+    //返回自己定义的继承IdentityInterface 的当前登录的用户User对象
     public function getIdentity($autoRenew = true)
     {
         if ($this->_identity === false) {
@@ -204,6 +219,7 @@ class User extends Component
      * If null, it means the current user will be a guest without any associated identity.
      * @throws InvalidValueException if `$identity` object does not implement [[IdentityInterface]].
      */
+    //设置用户验证对象
     public function setIdentity($identity)
     {
         if ($identity instanceof IdentityInterface) {
@@ -219,9 +235,9 @@ class User extends Component
     /**
      * Logs in a user.
      *
-     * After logging in a user, you may obtain the user's identity information from the [[identity]] property.
+     * After logging in a user, you may obtain the user's identity information from the [[identity]] property.从identity属性获取用户的identity信息
      * If [[enableSession]] is true, you may even get the identity information in the next requests without
-     * calling this method again.
+     * calling this method again.如果enableSession为true时可以不用调用该方法自动获取验证登录信息在下一次请求中
      *
      * The login status is maintained according to the `$duration` parameter:
      *
@@ -242,9 +258,12 @@ class User extends Component
      * Note that if [[enableSession]] is false, this parameter will be ignored.
      * @return boolean whether the user is logged in
      */
+    //登录
     public function login(IdentityInterface $identity, $duration = 0)
     {
+        //触发self::EVENT_BEFORE_LOGIN 事件
         if ($this->beforeLogin($identity, false, $duration)) {
+            //
             $this->switchIdentity($identity, $duration);
             $id = $identity->getId();
             $ip = Yii::$app->getRequest()->getUserIP();
@@ -254,6 +273,7 @@ class User extends Component
                 $log = "User '$id' logged in from $ip. Session not enabled.";
             }
             Yii::info($log, __METHOD__);
+            //触发self::EVENT_AFTER_LOGIN事件
             $this->afterLogin($identity, false, $duration);
         }
 
@@ -271,6 +291,7 @@ class User extends Component
      * @return IdentityInterface|null the identity associated with the given access token. Null is returned if
      * the access token is invalid or [[login()]] is unsuccessful.
      */
+    //通过 access token登录
     public function loginByAccessToken($token, $type = null)
     {
         /* @var $class IdentityInterface */
@@ -289,17 +310,25 @@ class User extends Component
      * This method attempts to log in a user using the ID and authKey information
      * provided by the [[identityCookie|identity cookie]].
      */
+    //通过cookie登录
     protected function loginByCookie()
     {
+        // 获取登录用的$identity对象 和有效期  return ['identity' => $identity, 'duration' => $duration];
         $data = $this->getIdentityAndDurationFromCookie();
         if (isset($data['identity'], $data['duration'])) {
             $identity = $data['identity'];
             $duration = $data['duration'];
+            //触发self::EVENT_BEFORE_LOGIN事件
             if ($this->beforeLogin($identity, true, $duration)) {
+                ////为当前用户更新新的identity
                 $this->switchIdentity($identity, $this->autoRenewCookie ? $duration : 0);
+                //登录用户Id
                 $id = $identity->getId();
+                //登录用户IP地址
                 $ip = Yii::$app->getRequest()->getUserIP();
+                //保存日志
                 Yii::info("User '$id' logged in from $ip via cookie.", __METHOD__);
+                //触发self::EVENT_AFTER_LOGIN事件
                 $this->afterLogin($identity, true, $duration);
             }
         }
@@ -313,20 +342,29 @@ class User extends Component
      * This parameter is ignored if [[enableSession]] is false.
      * @return boolean whether the user is logged out
      */
+    //当前用户退出登录，会删除验证用户所需的session数据
     public function logout($destroySession = true)
     {
+        //获取$identity 当前登录的用户对象
         $identity = $this->getIdentity();
+        //触发self::EVENT_BEFORE_LOGOUT事件
         if ($identity !== null && $this->beforeLogout($identity)) {
+            //设置_identity为null,删除用户登录是保存的相关cookie session数据
             $this->switchIdentity(null);
+            //当前登录用户的id
             $id = $identity->getId();
+            //登录用户的IP地址
             $ip = Yii::$app->getRequest()->getUserIP();
+            //保存日志
             Yii::info("User '$id' logged out from $ip.", __METHOD__);
+            //删除所有session数据
             if ($destroySession && $this->enableSession) {
                 Yii::$app->getSession()->destroy();
             }
+            //触发self::EVENT_AFTER_LOGOUT事件
             $this->afterLogout($identity);
         }
-
+        //返回是否为游客，也就是是否登录
         return $this->getIsGuest();
     }
 
@@ -335,6 +373,7 @@ class User extends Component
      * @return boolean whether the current user is a guest.
      * @see getIdentity()
      */
+    //判断是否登录
     public function getIsGuest()
     {
         return $this->getIdentity() === null;
@@ -345,6 +384,7 @@ class User extends Component
      * @return string|integer the unique identifier for the user. If `null`, it means the user is a guest.
      * @see getIdentity()
      */
+    //返回一个唯一的值代表这个登录的用户
     public function getId()
     {
         $identity = $this->getIdentity();
@@ -364,22 +404,25 @@ class User extends Component
      * @return string the URL that the user should be redirected to after login.
      * @see loginRequired()
      */
+    //返回浏览器跳转的url当用户成功登录的时候
     public function getReturnUrl($defaultUrl = null)
     {
+        //从session中获取 $this->returnUrlParam参数的值
         $url = Yii::$app->getSession()->get($this->returnUrlParam, $defaultUrl);
         if (is_array($url)) {
             if (isset($url[0])) {
+                //创建Url
                 return Yii::$app->getUrlManager()->createUrl($url);
             } else {
                 $url = null;
             }
         }
-
+        //如果url为空的话返回Yii::$app->getHomeUrl()，不为空返回上一步创建的url
         return $url === null ? Yii::$app->getHomeUrl() : $url;
     }
 
     /**
-     * Remembers the URL in the session so that it can be retrieved back later by [[getReturnUrl()]].
+     * Remembers the URL in the session so that it can be retrieved（重新取回、恢复） back later by [[getReturnUrl()]].
      * @param string|array $url the URL that the user should be redirected to after login.
      * If an array is given, [[UrlManager::createUrl()]] will be called to create the corresponding URL.
      * The first element of the array should be the route, and the rest of
@@ -389,6 +432,7 @@ class User extends Component
      * ['admin/index', 'ref' => 1]
      * ```
      */
+    //设置登录后跳转的Url地址 保存在session中$this->returnUrlParam参数中
     public function setReturnUrl($url)
     {
         Yii::$app->getSession()->set($this->returnUrlParam, $url);
@@ -418,12 +462,14 @@ class User extends Component
     public function loginRequired($checkAjax = true, $checkAcceptHeader = true)
     {
         $request = Yii::$app->getRequest();
+        //检查用户接受的content types 类型 是否在 loginUrl跳转的Url MIME types 中
         $canRedirect = !$checkAcceptHeader || $this->checkRedirectAcceptable();
         if ($this->enableSession
             && $request->getIsGet()
             && (!$checkAjax || !$request->getIsAjax())
             && $canRedirect
         ) {
+            //设置的请求的Url为登录成功后回调的Url保存在session中
             $this->setReturnUrl($request->getUrl());
         }
         if ($this->loginUrl !== null && $canRedirect) {
@@ -514,6 +560,7 @@ class User extends Component
      * This method will set the expiration time of the identity cookie to be the current time
      * plus the originally specified cookie duration.
      */
+    //更新验证cookie
     protected function renewIdentityCookie()
     {
         $name = $this->identityCookie['name'];
@@ -538,6 +585,7 @@ class User extends Component
      * @param integer $duration number of seconds that the user can remain in logged-in status.
      * @see loginByCookie()
      */
+    //增加 identity 验证登录的cookie
     protected function sendIdentityCookie($identity, $duration)
     {
         $cookie = new Cookie($this->identityCookie);
@@ -558,6 +606,7 @@ class User extends Component
      * @see loginByCookie()
      * @since 2.0.9
      */
+    //从cookie中获取登录的identity信息 和duration（持续时间）信息  return ['identity' => $identity, 'duration' => $duration];
     protected function getIdentityAndDurationFromCookie()
     {
         $value = Yii::$app->getRequest()->getCookies()->getValue($this->identityCookie['name']);
@@ -580,6 +629,7 @@ class User extends Component
                 }
             }
         }
+        //删除登录保存的一些 identity cookie信息
         $this->removeIdentityCookie();
         return null;
     }
@@ -589,6 +639,7 @@ class User extends Component
      * This method is used when [[enableAutoLogin]] is true.
      * @since 2.0.9
      */
+    //删除登录保存的一些 identity cookie信息
     protected function removeIdentityCookie()
     {
         Yii::$app->getResponse()->getCookies()->remove(new Cookie($this->identityCookie));
@@ -608,26 +659,31 @@ class User extends Component
      * @param integer $duration number of seconds that the user can remain in logged-in status.
      * This parameter is used only when `$identity` is not null.
      */
+    //为当前用户更新新的identity
     public function switchIdentity($identity, $duration = 0)
     {
+        //设置_identity
         $this->setIdentity($identity);
-
+        //如果enableSession为false直接返回
         if (!$this->enableSession) {
             return;
         }
 
         /* Ensure any existing identity cookies are removed. */
+        //当允许基于cookie的自动登录时，确保存在的identity cookie 已经被删除
         if ($this->enableAutoLogin) {
             $this->removeIdentityCookie();
         }
 
         $session = Yii::$app->getSession();
+        //当前环境不是测试环境时，重新生成
         if (!YII_ENV_TEST) {
+            //不修改当前会话中数据的前提下使用新的 ID 替换原有会话 ID。
             $session->regenerateID(true);
         }
         $session->remove($this->idParam);
         $session->remove($this->authTimeoutParam);
-
+        //如果$identity存在，重新设置登录所需的session参数的值
         if ($identity) {
             $session->set($this->idParam, $identity->getId());
             if ($this->authTimeout !== null) {
@@ -636,6 +692,7 @@ class User extends Component
             if ($this->absoluteAuthTimeout !== null) {
                 $session->set($this->absoluteAuthTimeoutParam, time() + $this->absoluteAuthTimeout);
             }
+            //如果$duration 大于0 并且允许基于cookie的自动登录，从新保存基于cookie登录所需的cookie数据
             if ($duration > 0 && $this->enableAutoLogin) {
                 $this->sendIdentityCookie($identity, $duration);
             }
@@ -652,9 +709,11 @@ class User extends Component
      * If the user identity cannot be determined by session, this method will try to [[loginByCookie()|login by cookie]]
      * if [[enableAutoLogin]] is true.
      */
+    //从session和cookie更新身份验证的状态，
     protected function renewAuthStatus()
     {
         $session = Yii::$app->getSession();
+        //$session->getHasSessionId() 返回一个值用来说明当前的请求是否发送了 session ID，默认的用session name会检查cookie和$_GET，如果通过其他途径的话需要重写覆盖此方法，获取session中__id的值
         $id = $session->getHasSessionId() || $session->getIsActive() ? $session->get($this->idParam) : null;
 
         if ($id === null) {
@@ -671,16 +730,20 @@ class User extends Component
             $expire = $this->authTimeout !== null ? $session->get($this->authTimeoutParam) : null;
             $expireAbsolute = $this->absoluteAuthTimeout !== null ? $session->get($this->absoluteAuthTimeoutParam) : null;
             if ($expire !== null && $expire < time() || $expireAbsolute !== null && $expireAbsolute < time()) {
+                //登录有效时间$expire小于现在时间或者绝对$expireAbsolute小于现在时间，退出登录状态
                 $this->logout(false);
             } elseif ($this->authTimeout !== null) {
+                //没有超时，重新设置authTimeoutParam 过期时间参数的值
                 $session->set($this->authTimeoutParam, time() + $this->authTimeout);
             }
         }
-
+        //允许基于cookie的自动登录
         if ($this->enableAutoLogin) {
             if ($this->getIsGuest()) {
+                //如果是游客，用cookie登录
                 $this->loginByCookie();
             } elseif ($this->autoRenewCookie) {
+                //已登录，重新刷新登录时保存的相关cookie的值
                 $this->renewIdentityCookie();
             }
         }
@@ -703,8 +766,10 @@ class User extends Component
      * caching is effective only within the same request and only works when `$params = []`.
      * @return boolean whether the user can perform the operation as specified by the given permission.
      */
+    //检查用户是否有执行指定$permissionName操作的权限
     public function can($permissionName, $params = [], $allowCaching = true)
     {
+        //直接从$this->_access 取出
         if ($allowCaching && empty($params) && isset($this->_access[$permissionName])) {
             return $this->_access[$permissionName];
         }
@@ -727,9 +792,12 @@ class User extends Component
      * @see acceptableRedirectTypes
      * @since 2.0.8
      */
+    //检查用户接受的content types 类型 是否在 loginUrl跳转的Url MIME types 中
     protected function checkRedirectAcceptable()
     {
+        //Returns the content types acceptable by the end user 返回用户接受的content types 类型
         $acceptableTypes = Yii::$app->getRequest()->getAcceptableContentTypes();
+        // 为空或者为count($acceptableTypes) === 1 && array_keys($acceptableTypes)[0] === '*/*' 返回true
         if (empty($acceptableTypes) || count($acceptableTypes) === 1 && array_keys($acceptableTypes)[0] === '*/*') {
             return true;
         }
@@ -752,6 +820,7 @@ class User extends Component
      * @since 2.0.6
      * @deprecated Deprecated since version 2.0.9, to be removed in 2.1. Use `getAccessChecker()` instead.
      */
+    //返回和user组件关联的auth manager 组件，默认的是`authManager` 应用组件.
     protected function getAuthManager()
     {
         return Yii::$app->getAuthManager();

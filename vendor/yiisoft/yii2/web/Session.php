@@ -206,6 +206,7 @@ class Session extends Component implements \IteratorAggregate, \ArrayAccess, \Co
     /**
      * @return boolean whether the session has started
      */
+    //session是否启用
     public function getIsActive()
     {
         return session_status() === PHP_SESSION_ACTIVE;
@@ -217,9 +218,10 @@ class Session extends Component implements \IteratorAggregate, \ArrayAccess, \Co
      * Returns a value indicating whether the current request has sent the session ID.
      * The default implementation will check cookie and $_GET using the session name.
      * If you send session ID via other ways, you may need to override this method
-     * or call [[setHasSessionId()]] to explicitly set whether the session ID is sent.
+     * or call [[setHasSessionId()]] to explicitly（明确的、坦白的） set whether the session ID is sent.
      * @return boolean whether the current request has sent the session ID.
      */
+    // 返回一个值用来说明当前的是否请求发送了 session ID，默认的用session name会检查cookie和$_GET，如果通过其他途径的话需要重写覆盖此方法
     public function getHasSessionId()
     {
         if ($this->_hasSessionId === null) {
@@ -279,6 +281,7 @@ class Session extends Component implements \IteratorAggregate, \ArrayAccess, \Co
             // add @ to inhibit possible warning due to race condition
             // https://github.com/yiisoft/yii2/pull/1812
             if (YII_DEBUG && !headers_sent()) {
+                //不修改当前会话中数据的前提下使用新的 ID 替换原有会话 ID。
                 session_regenerate_id($deleteOldSession);
             } else {
                 @session_regenerate_id($deleteOldSession);
